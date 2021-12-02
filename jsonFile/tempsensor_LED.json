@@ -1,0 +1,151 @@
+[
+    {
+        "id": "ab692055.3dac6",
+        "type": "inject",
+        "z": "2e512df1.34d662",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 230,
+        "y": 640,
+        "wires": [
+            [
+                "2bf48a76.5d2206"
+            ]
+        ]
+    },
+    {
+        "id": "d64ead55.c4693",
+        "type": "I2C",
+        "z": "2e512df1.34d662",
+        "name": "",
+        "ad": "0x44",
+        "rules": [
+            {
+                "t": "W",
+                "v": "0x21",
+                "c": "0x30",
+                "de": "16"
+            },
+            {
+                "t": "W",
+                "v": "0xE0",
+                "c": "0x00",
+                "de": ""
+            },
+            {
+                "t": "R",
+                "v": "0x00",
+                "b": "6",
+                "de": ""
+            }
+        ],
+        "x": 610,
+        "y": 640,
+        "wires": [
+            [
+                "59ab8883.08b4b8"
+            ]
+        ]
+    },
+    {
+        "id": "59ab8883.08b4b8",
+        "type": "function-Code",
+        "z": "2e512df1.34d662",
+        "name": "",
+        "func": "data = msg\ntemp = (data[0]<<8 |data[1])\ncelsius = -45 + (175*temp/65535.0)\n\nputs \"----------------------------\"\nputs celsius\nreturn celsius",
+        "x": 530,
+        "y": 760,
+        "wires": [
+            [
+                "89df2ccf.6463d"
+            ]
+        ]
+    },
+    {
+        "id": "2bf48a76.5d2206",
+        "type": "Constant",
+        "z": "2e512df1.34d662",
+        "name": "",
+        "C": "1",
+        "x": 440,
+        "y": 640,
+        "wires": [
+            [
+                "d64ead55.c4693"
+            ]
+        ]
+    },
+    {
+        "id": "89df2ccf.6463d",
+        "type": "switch",
+        "z": "2e512df1.34d662",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gte",
+                "v": "24.0",
+                "vt": "num"
+            },
+            {
+                "t": "lt",
+                "v": "24.0",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 700,
+        "y": 760,
+        "wires": [
+            [
+                "1c6e118.c483cef"
+            ],
+            [
+                "af01a44e.815988"
+            ]
+        ]
+    },
+    {
+        "id": "1c6e118.c483cef",
+        "type": "LED",
+        "z": "2e512df1.34d662",
+        "name": "赤LED",
+        "LEDtype": "GPIO",
+        "targetPort": "15",
+        "targetPort_mode": "2",
+        "onBoardLED": "0",
+        "x": 870,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "af01a44e.815988",
+        "type": "LED",
+        "z": "2e512df1.34d662",
+        "name": "青LED",
+        "LEDtype": "GPIO",
+        "targetPort": "16",
+        "targetPort_mode": "2",
+        "onBoardLED": "0",
+        "x": 870,
+        "y": 820,
+        "wires": []
+    }
+]
