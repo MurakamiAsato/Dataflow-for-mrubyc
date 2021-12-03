@@ -230,7 +230,6 @@ nodes_Hash.each do |node|
   if created_node_num.include?(node[1][:type]) == false
     created_node_num.store(node[1][:type],0)
   end
-  p created_node_parts
   #LEDノードのプログラム記述
   if node[1][:type] == "LED"
     created_node_num["LED"] += 1

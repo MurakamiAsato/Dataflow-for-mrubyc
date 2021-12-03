@@ -53,7 +53,7 @@ def Dataprocessing(node_id, mode, output = "")
 end
 def Node_inject(node_id)
     if Nodes_Hash[node_id][:repeat] != ""
-        if GetTime(node_id) == 1    
+        if GetTime(node_id) == 1
             if Nodes_Hash[node_id][:flow_controll] == 1
                 Nodes_Hash[node_id][:flow_controll] = 0
             elsif Nodes_Hash[node_id][:flow_controll] == 0
@@ -63,7 +63,7 @@ def Node_inject(node_id)
         end
         return 0
     else
-        Dataprocessing(node_id,:create,[Nodes_Hash[node_id][:flow_controll]])
+        Dataprocessing(node_id,:create,[1])
         return 0
     end
 end
@@ -139,9 +139,7 @@ def Node_function(node_id)
     output = 0
 
     input_array.each do |input_data|
-        if input_data == 0 || input_data == ""
-            return 0
-        end
+ 
     
         if node_id == :N59ab8
             output = FunctionNode_N59ab8(input_data)
