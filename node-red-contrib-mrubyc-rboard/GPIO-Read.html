@@ -1,0 +1,91 @@
+<script type="text/javascript">
+    RED.nodes.registerType('GPIO-Read', {
+        category: 'mruby_Rboad_Nodes',
+        color: '#A9E2F3',
+        defaults: {
+            name: { value: "" },
+            ReadType:{value: "digital_read"}, 
+            GPIOType:{value: "read"},            
+            targetPort_digital: {value: ""},
+            targetPort_ADC: {value: ""}
+
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "white-globe.svg",
+        label: function () {
+            return this.name||"GPIO-Read";
+        },
+        
+        oneditprepare: function(){
+
+            $("#node-input-ReadType").on("change",function() {
+                if (this.value === "digital_read") {
+                    $("#ReadType-digital").show();
+                    $("#ReadType-ADC").hide();
+                } else if (this.value === "ADC") {
+                    $("#ReadType-digital").hide();
+                    $("#ReadType-ADC").show();
+                }
+            }).trigger("change");
+        }
+    });
+</script>
+
+
+<script type="text/html" data-template-name="GPIO-Read">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> 名前</label>
+        <input type="text" id="node-input-name" placeholder="名前">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-ReadType"><i class="icon-tag"></i> 入力形式</label>
+        <select id="node-input-ReadType">
+            <option value="digital_read">Digital Read</option>
+            <option value="ADC">Analog Read</option>
+        </select>        
+    </div>
+
+    <div id="ReadType-digital">
+        <div class="form-row">
+            <label for="node-input-targetPort_digital"><i class="icon-tag"></i> 入力Pin</label>
+            <input type="text" id="node-input-targetPort_digital"  placeholder="Pin番号を入力(1～20)">
+        </div>
+    </div>
+
+    <div id="ReadType-ADC">
+        <div class="form-row">
+            <label for="node-input-targetPort_ADC"><i class="icon-tag"></i> 入力Pin</label>
+            <select id="node-input-targetPort_ADC">
+                <option value="0">ADC 0 (Pin0)</option>
+                <option value="1">ADC 1 (Pin1)</option>
+                <option value="2">ADC 2 (Pin5)</option>
+                <option value="3">ADC 3 (Pin6)</option>
+                <option value="4">ADC 4 (Pin7)</option>
+                <option value="5">ADC 5 (Pin8)</option>
+                <option value="6">ADC 6 (Pin19)</option>
+                <option value="7">ADC 7 (Pin20)</option>
+            </select>   
+        </div>
+
+        <div class="form-tips"><b>注意:</b> 使用するADCのチャンネルとPin番号は一致していません.以下のように設定されています.
+            <br/>・ADC0 (Pin0)
+            <br/>・ADC1 (Pin1)
+            <br/>・ADC2 (Pin5)
+            <br/>・ADC3 (Pin6)
+            <br/>・ADC4 (Pin7)
+            <br/>・ADC5 (Pin8)
+            <br/>・ADC6 (Pin19)
+            <br/>・ADC7 (Pin20)
+
+        </div>
+    </div>
+
+
+</script>
+
+ 
+<script type="text/x-red" data-help-name="GPIO-Read">
+    <p>GPIOを制御するノードです</p>
+</script>

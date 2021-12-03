@@ -1,0 +1,152 @@
+<script type="text/html" data-template-name="I2C">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="label.name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-ad"><i class="fa fa-link"></i> srave adress</label>
+        <input type="text" id="node-input-ad"  placeholder="adress">
+    </div>
+    <div class="form-row node-input-rule-container-row">
+        <ol id="node-input-rule-container"></ol>
+    </div>
+
+</script>
+
+<script type="text/html" data-help-name="I2C">
+    <p>I2Cに対して色々やるノードです。
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('I2C', {
+        color:"#c0deed",
+        category: 'mruby_Rboad_Nodes',
+        defaults: {
+            name: { value:""},
+            ad:{value:""},
+            rules: { value:[{t:"W", v:""}]}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "serial.svg",
+        label: function() {
+            return this.name;
+        },
+        oneditprepare: function() {
+            var node = this;
+            var operators = [
+                {v:"W",t:"Write"},
+                {v:"R",t:"Read"}
+            ];
+            
+            var caseLabel = "ignore case";
+
+            function resizeRule(rule) {
+                var newWidth = rule.width();
+                var selectField = rule.find(".node-input-rule-select");
+                var type = selectField.val()||"";
+                var valueField = rule.find(".node-input-rule-value");
+
+                if (newWidth === 0) {
+                    newWidth = 400;
+                }
+                selectField.width(60);
+                valueField.typedInput("width",(145));
+            }
+
+            $("#node-input-rule-container").css('min-height','150px').css('min-width','450px').editableList({
+                addItem: function(container,i,opt) {
+                    var rule = opt;
+                    var row = $('<div/>').appendTo(container);
+
+                    if (!rule.hasOwnProperty('t')) {
+                        rule.t = 'W';
+                    }
+                    
+                    var selectField = $('<select/>',{class:"node-input-rule-select", style:"width:120px; margin-left: 5px; text-align: center;"}).appendTo(row);
+                    for (var d in operators) {
+                        selectField.append($("<option></option>").val(operators[d].v).text(operators[d].t));
+                    }
+                    var valueField = $('<input/>',{class:"node-input-rule-value",type:"text",style:"margin-left: 5px; width: 145px;",placeholder:"register adress"}).appendTo(row).typedInput({default:'str',types:['str']});
+                    var byteField = $('<input/>',{class:"node-input-rule-byte",type:"text",style:"margin-left: 5px; width: 80px;",placeholder:"bytes"}).appendTo(row);
+                    var commandField = $('<input/>',{class:"node-input-rule-command",type:"text",style:"margin-left: 5px; width: 80px;",placeholder:"command"}).appendTo(row);
+                    var delayField = $('<input/>',{class:"node-input-rule-delay",type:"text",style:"margin-left: 5px; width: 80px;",placeholder:"delay(ms)"}).appendTo(row);
+                    
+
+                    resizeRule(container);
+                    selectField.change(function() {
+                        var type = selectField.val();
+                        
+                        if (type === "W") {
+                            byteField.hide();
+                            commandField.show();
+                        } else {
+                            byteField.show();
+                            commandField.hide();
+                        }
+                    });
+                    
+                    selectField.val(rule.t);
+                    valueField.typedInput('value',rule.v);
+                    byteField.val(rule.b);
+                    commandField.val(rule.c);
+                    delayField.val(rule.de);
+
+                    selectField.change();
+                    
+
+                },
+                removeItem: function(opt) {
+                    var removeRules = $("#node-input-rule-container").editableList('items');
+                    removeRules.each(function(i) { $(this).find(".node-input-rule-index").html(i+1); });
+                },
+                resizeItem: resizeRule,
+                sortItems: function(rules) {
+                    var sortRules = $("#node-input-rule-container").editableList('items');
+                    sortRules.each(function(i) { $(this).find(".node-input-rule-index").html(i+1); });
+                },
+                sortable: true,
+                removable: true
+            });
+
+            for (var i=0;i<this.rules.length;i++) {
+                var rule = this.rules[i];
+                $("#node-input-rule-container").editableList('addItem',rule);
+            }
+        },
+        oneditsave: function() {
+            var rules = $("#node-input-rule-container").editableList('items');
+            var node = this;
+            node.rules= [];
+            rules.each(function(i) {
+                var rule = $(this);
+                var type = rule.find(".node-input-rule-select").val();
+                var r = {t:type};
+
+                
+                r.v = rule.find(".node-input-rule-value").typedInput('value');
+                if (type === "R") {
+                    r.b = rule.find(".node-input-rule-byte").val();                    
+                }
+
+                if (type === "W") {
+                    r.c = rule.find(".node-input-rule-command").val();                    
+                }
+                r.de = rule.find(".node-input-rule-delay").val(); ;
+
+                node.rules.push(r);
+            });
+        },
+        oneditresize: function(size) {
+            var rows = $("#dialog-form>div:not(.node-input-rule-container-row)");                                
+            var height = size.height;
+                
+            for (var i=0;i<rows.size();i++) {
+                height -= $(rows[i]).outerHeight(true);
+            }
+            var editorRow = $("#dialog-form>div.node-input-rule-container-row");
+            height -= (parseInt(editorRow.css("marginTop"))+parseInt(editorRow.css("marginBottom")));
+            $("#node-input-rule-container").editableList('height',height);
+        }
+    });
+</script>

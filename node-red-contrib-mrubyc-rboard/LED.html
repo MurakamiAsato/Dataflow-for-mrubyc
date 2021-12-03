@@ -1,0 +1,88 @@
+<script type="text/javascript">
+    RED.nodes.registerType('LED', {
+        category: 'mruby_Rboad_Nodes',
+        color: "#ffe3a6",
+        defaults: {
+            name: { value: "" },
+            LEDtype: {value: "onBoardLED"},
+            targetPort: {value: ""},
+            targetPort_mode: {value:""},
+            onBoardLED: {value: ""}
+        },
+        inputs: 1,
+        outputs: 0,
+        icon: "light.svg",
+        align:"right",
+        label: function () {
+            return this.name||"LED";
+        },
+
+        oneditprepare: function(){
+
+            $("#node-input-LEDtype").on("change",function() {
+                if (this.value === "GPIO") {
+                    $("#LED-conected-Pin").show();
+                    $("#LED-onBoard").hide();
+
+                } else if (this.value === "onBoardLED") {
+                    $("#LED-conected-Pin").hide();
+                    $("#LED-onBoard").show();
+                }
+            }).trigger("change");
+        }
+    });
+</script>
+ 
+<script type="text/html" data-template-name="LED">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> 名前</label>
+        <input type="text" id="node-input-name" placeholder="名前">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-LEDtype"><i class="icon-tag"></i>制御対象 </label>
+        <select id="node-input-LEDtype">
+            <option value="onBoardLED">オンボードLED</option>
+            <option value="GPIO">Pinと接続しているLED</option>
+        </select>
+    </div>
+    
+    <div id="LED-conected-Pin" class="form-row">
+        <label for="node-input-targetPort"><i class="icon-tag"></i> Pin番号</label>
+        <input type="text" id="node-input-targetPort"  placeholder="LEDと接続しているPin番号を入力">
+
+        <label for="node-input-targetPort_mode"><i class="icon-tag"></i> LEDのON/OFFモード</label>
+        <select id="node-input-targetPort_mode">
+            <option value="0">0 (OFF)</option>
+            <option value="1">1 (ON)</option>
+            <option value="2">入力に従ってONとOFFを切り替える</option>    
+        </select>        
+    </div>
+    
+
+    <div id="LED-onBoard" class="form-row">
+        <label for="node-input-onBoardLED"><i class="icon-tag"></i>オンボードLED </label>
+        <select id="node-input-onBoardLED">
+            <option value="0">使用しない</option>
+            <option value="1">1:D1</option>
+            <option value="2">2:D2</option>
+            <option value="3">3:D1 and D2</option>
+            <option value="4">4:D3</option>
+            <option value="5">5:D1 and D3</option>
+            <option value="6">6:D2 and D3</option>
+            <option value="7">7:D1 and D2 and D3</option>
+            <option value="8">8:D4</option>
+            <option value="9">9:D1 and D4</option>
+            <option value="10">10:D2 and D4</option>
+            <option value="11">11:D1 and D2 and D4</option>
+            <option value="12">12:D3 and D4</option>
+            <option value="13">13:D1 and D3 and D4</option>
+            <option value="14">14:D2 and D3 and D4</option>
+            <option value="15">15:all LED</option>
+        </select>
+    </div>
+</script>
+ 
+<script type="text/x-red" data-help-name="LED">
+    <p>LEDを制御するノードです</p>
+</script>

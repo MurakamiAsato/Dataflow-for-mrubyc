@@ -1,0 +1,171 @@
+<script type="text/javascript">
+    RED.nodes.registerType('GPIO-Write-1', {
+        category: 'mruby_Rboad_Nodes',
+        color: '#A9E2F3',
+        defaults: {
+            name: { value: "" },
+            WriteType:{value: "digital_write"}, 
+            GPIOType:{value: "write"},            
+            targetPort_digital: {value: ""},
+            targetPort_mode: {value: "0"},
+            targetPort_PWM: {value: "0"},
+            PWM_num: {value: ""},
+            cycle: {value: ""},
+            double: {value: "0"},
+            time: {value: ""},
+            rate: {value: ""}
+
+        },
+        inputs: 1,
+        outputs: 0,
+        icon: "white-globe.svg",
+        label: function () {
+            return this.name||"GPIO-Write";
+        },
+        paletteLabel: function() {
+            return this.name||"GPIO-Write";
+        },
+        
+        oneditprepare: function(){
+
+            
+
+            $("#node-input-WriteType").on("change",function() {
+                if (this.value === "digital_write") {
+                    $("#WriteType-digital").show();
+                    $("#WriteType-PWM").hide();
+                } else if (this.value === "PWM") {
+                    $("#WriteType-digital").hide();
+                    $("#WriteType-PWM").show();
+                }
+            }).trigger("change");
+            
+            $("#node-input-PWM_num").on("change",function() {
+                var Port = "";
+                var PWM_num = this.value;
+
+                if (PWM_num === "1"){
+                    Port = "12";
+                }else if(PWM_num === "2"){
+                    Port = "16";
+                }else if(PWM_num === "3"){
+                    Port = "";
+                }else if(PWM_num === "4"){
+                    Port = "18";
+                }else if(PWM_num === "5"){
+                    Port = "2";
+                }
+            $("#node-input-targetPort_PWM").val(Port);
+            }).trigger("change");
+            
+
+            
+
+            $("#node-input-time").on("change",function() {
+                var time = this.value;
+                var double = $("#node-input-double").val();
+                var cycle;
+                cycle = time*(2**double)*(10**-4)
+                $("#node-input-cycle").val(cycle);
+            }).trigger("change");
+
+            $("#node-input-double").on("change",function() {
+                var time = $("#node-input-time").val();
+                var double = this.value;
+                var cycle;
+                cycle = time*(2**double)*(10**-4)
+                $("#node-input-cycle").val(cycle);
+            }).trigger("change");
+            
+        }
+        
+    });
+</script>
+
+
+<script type="text/html" data-template-name="GPIO-Write-1">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> 名前</label>
+        <input type="text" id="node-input-name" placeholder="名前" >
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-WriteType"><i class="icon-tag"></i> 出力形式</label>
+        <select id="node-input-WriteType">
+            <option value="digital_write">Digital Write</option>
+            <option value="PWM">PWM</option>
+        </select>        
+    </div>
+
+    <div id="WriteType-digital" >
+        <div class="form-row">
+            <label for="node-input-targetPort_digital"><i class="icon-tag"></i> 出力Pin</label>
+            <input type="text" id="node-input-targetPort_digital"  placeholder="Pin番号を入力(1～20)">
+        </div>
+
+        <div class="form-row">
+            <label for="node-input-targetPort_mode"><i class="icon-tag"></i> モード</label>
+            <select type="text" id="node-input-targetPort_mode">
+                <option value="0">0 (OFF)</option>
+                <option value="1">1 (ON)</option>
+                <option value="2">入力に従ってONとOFFを切り替える</option>
+            </select>   
+        </div>
+    </div>
+
+    <div id="WriteType-PWM">
+        <div class="form-row">
+            <label for="node-input-PWM_num"><i class="icon-tag"></i> 出力Pin</label>
+            <select id="node-input-PWM_num">
+                <option value="1">PWM 1 (Pin12)</option>
+                <option value="2">PWM 2 (Pin16)</option>
+                <option value="3">PWM 3 ()</option>
+                <option value="4">PWM 4 (Pin18)</option>
+                <option value="5">PWM 5 (Pin2)</option>
+            </select> <input type="text" readonly id="node-input-targetPort_PWM" style="width:0px;"/>
+        </div>
+        
+
+
+        <br/>
+        <div class="form-row"><i class="fa fa-sign-in"></i> 周期設定:</div>
+        <div class="form-row"><label></label>
+            time: <input type="text" id="node-input-time"  placeholder="1～65535[ms]" style="width:100px;"/>
+            &nbsp;double: <select  id="node-input-double"  style="width:100px;">
+            <option value="0">×1</option>
+            <option value="1">×2</option>
+            <option value="2">×4</option>
+            <option value="3">×8</option>
+            <option value="4">×16</option>
+            <option value="5">×32</option>
+            <option value="6">×64</option>
+            <option value="7">×128</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <label for="node-input-rate"><i class="icon-tag"></i> 周期[ms]</label>
+            time*double = <input type="text" readonly id="node-input-cycle"  style="width:100px;"/>
+        </div>
+
+        <div class="form-row">
+            <label for="node-input-rate"><i class="icon-tag"></i> デューティー比</label>
+            <input type="text" id="node-input-rate"  placeholder="パーセント[%]">
+        </div>
+
+        <div class="form-tips"><b>注意:</b> 使用するPWMのチャンネルとPin番号は一致していません.以下のように設定されています.
+            <br/>・PWM1 (Pin12)
+            <br/>・PWM2 (Pin16)
+            <br/>・PWM3 (Pin)
+            <br/>・PWM4 (Pin18)
+            <br/>・PWM5 (Pin2)
+        </div>
+    </div>
+
+
+</script>
+
+ 
+<script type="text/x-red" data-help-name="GPIO-Write-1">
+    <p>GPIOを制御するノードです</p>
+</script>

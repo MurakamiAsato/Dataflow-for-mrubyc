@@ -1,0 +1,98 @@
+
+<script type="text/javascript">
+	RED.nodes.registerType('Button',{
+		category: 'mruby_Rboad_Nodes',
+		color: '#a6bbcf',
+		defaults: {
+			name: {value:""},
+			onBoardButton:{value:"0"},
+			targetPort: {value: ""},
+			selectPull: {value: "0"}
+		},
+		inputs:1,
+		outputs:1,
+		icon: "arrow-in.png",
+		label: function() {
+			return this.name||"Button";
+		},
+        
+        oneditprepare: function(){
+
+            $("#node-input-onBoardButton").on("change",function() {
+                if (this.value === "0") {
+                    $("#Button_usingTact").show();
+                } else if (this.value === "1") {
+                    $("#Button_usingTact").hide();
+                }
+            }).trigger("change");
+        }
+		/*
+		button: {
+			enabled: function() {
+				return !this.changed
+			},
+			onclick: function() {
+				if (this.changed) {
+					return RED.notify(RED._("notification.warning", {message:RED._("notification.warnings.undeployedChanges")}),"warning");
+				}
+				var label = (this.name||"Button");
+				var node = this;
+				$.ajax({
+					url: "Button/"+this.id,
+					type:"POST",
+					success: function(resp) {
+						RED.notify(node._("Button.success",{label:label}),"success");
+					},
+					error: function(jqXHR,textStatus,errorThrown) {
+						if (jqXHR.status == 404) {
+							RED.notify(node._("common.notification.error",{message:node._("common.notification.errors.not-deployed")}),"error");
+						} else if (jqXHR.status == 500) {
+							RED.notify(node._("common.notification.error",{message:node._("inject.errors.failed")}),"error");
+						} else if (jqXHR.status == 0) {
+							RED.notify(node._("common.notification.error",{message:node._("common.notification.errors.no-response")}),"error");
+						} else {
+							RED.notify(node._("common.notification.error",{message:node._("common.notification.errors.unexpected",{status:jqXHR.status,message:textStatus})}),"error");
+						}
+					}
+				});
+			}
+		}
+		*/
+	});
+</script>
+
+<script type="text/html" data-template-name="Button">
+	<div class="form-row">
+		<label for="node-input-name"><i class="icon-tag"></i> Name</label>
+		<input type="text" id="node-input-name" placeholder="Name">
+	</div>
+
+	<div class="form-row">
+        <label for="node-input-onBoardButton"><i class="icon-tag"></i>オンボードSW </label>
+        <select id="node-input-onBoardButton">
+            <option value="0">使用しない</option>
+            <option value="1">使用する</option>
+        </select>
+    </div>
+
+	<div id = "Button_usingTact">
+		<div class="form-row" >
+        	<label for="node-input-targetPort"><i class="icon-tag"></i> 対象Pin番号</label>
+        	<input type="text" id="node-input-targetPort"  placeholder="ボタンと接続しているPin番号を入力">
+		</div>
+
+		<div class="form-row">
+			<label for="node-input-selectPull"><i class="icon-tag"></i> 内部抵抗選択 </label>
+        	<select id="node-input-selectPull">
+            	<option value="0">Pull なし</option>
+            	<option value="1">Pull up</option>
+				<option value="-1">Pull down</option>
+        	</select>
+		</div>
+    </div>
+
+</script>
+
+<script type="text/x-red" data-help-name="Button">
+	<p>Button node is simple node with button that just say "helo world".</p>
+</script>

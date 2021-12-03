@@ -1,0 +1,38 @@
+<script type="text/javascript">
+    RED.nodes.registerType('Constant', {
+        category: 'mruby_Rboad_Nodes',
+        color: '#A9E2F3',
+        defaults: {
+            name: { value: "" },
+            C: {value: "1"}
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "arrow-in.svg",
+        label: function () {
+            return this.name||"Constant";
+        },
+        oneditprepare: function() {
+            
+            $("#node-input-C").typedInput({
+            type:"num",
+            types:["num"]
+            })
+        }
+    });
+</script>
+ 
+<script type="text/html" data-template-name="Constant">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> 名前</label>
+        <input type="text" id="node-input-name" placeholder="名前">
+    </div>
+    <div class="form-row">
+        <label for="node-input-C"><i class="fa fa-list-ol"></i> Constant to send</label>
+        <input type="text" id="node-input-C"  placeholder="Constant">
+    </div>
+</script>
+ 
+<script type="text/x-red" data-help-name="Constant">
+    <p>指定した定数を送信するノードです。前ノードからデータを受け取ることで機能します。</p>
+</script>

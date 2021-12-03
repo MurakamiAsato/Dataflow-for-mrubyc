@@ -1,0 +1,33 @@
+{
+  "name": "node-red-contrib-mrubyc-rboard",
+  "node-red" : {
+    "nodes": {
+      "Constant":"Constant.js",
+      "Button": "Button.js",
+      "LED":"LED.js",
+      "GPIO-Read":"GPIO-Read.js",
+      "GPIO-Write-1":"GPIO-Write-1.js",
+      "I2C":"I2C.js",
+      "function":"function.js"
+    }
+  },
+  "version": "1.0.2",
+  "description": "Node-RED nodes for mruby/c Rboard ",
+  "main": "Button.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MurakamiAsato/node-red-contrib-mrubyc-rboard.git"
+  },
+  "keywords": [
+    "node-red", "RBoard", "mruby", "mruby/c"
+  ],
+  "author": "MurakamiAsato",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/MurakamiAsato/node-red-contrib-mrubyc-rboard/issues"
+  },
+  "homepage": "https://github.com/MurakamiAsato/node-red-contrib-mrubyc-rboard#readme"
+}
