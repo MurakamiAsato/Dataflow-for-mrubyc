@@ -1,4 +1,4 @@
-#this is LED Node
+/---LEDノードのノードプログラム---/
 
 def GPIO_digital_mode2(node_id,input)
     if input == 0
@@ -14,7 +14,7 @@ def Node_LED(node_id)
     if input_array == []
       return 0
     end
-      
+    /本機能/
     input_array.each do |input|
     
             if Nodes_Hash[node_id][:targetPort_mode] == "2" && Nodes_Hash[node_id][:LEDtype] == "GPIO"

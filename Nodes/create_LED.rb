@@ -23,7 +23,7 @@ end
 
 def LED_initialize()
     File.open("./Nodes/LED.rb", mode = "w"){|f|
-    f.write("#this is LED Node\n")  # ファイルに書き込む
+    f.write("/---LEDノードのノードプログラム---/\n")  # ファイルに書き込む
     }
 
     return :LED_initialize
@@ -101,7 +101,7 @@ def Node_LED(node_id)
     if input_array == []
       return 0
     end
-      
+    /本機能/
     input_array.each do |input|
     "
         if $created_node_parts.include?(:GPIO_digital_mode2)

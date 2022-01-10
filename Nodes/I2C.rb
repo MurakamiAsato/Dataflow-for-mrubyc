@@ -1,3 +1,4 @@
+/I2Cノードのノードプログラム/
 def Node_I2C(node_id)
     /データ有無の確認/
     input_array = Dataprocessing(node_id,:get)
@@ -10,7 +11,7 @@ def Node_I2C(node_id)
             return 0
         end
     end
-
+    /本機能/
     sraveAd = Nodes_Hash[node_id][:ad].to_i
     output = []
     Nodes_Hash[node_id][:rules].each do |rule|

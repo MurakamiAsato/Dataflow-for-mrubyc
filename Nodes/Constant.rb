@@ -1,3 +1,4 @@
+/---Constantノードのノードプログラム---/
 def Node_Constant(node_id)
   input_array = Dataprocessing(node_id,:get)
   Dataprocessing(node_id,:delete)

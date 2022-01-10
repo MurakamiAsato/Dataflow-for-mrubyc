@@ -340,6 +340,7 @@ end
 
 
 File.open(mrubyc_program, mode = "a"){|f|
+  f.write("/---各ノードを呼び出す司令塔(loop処理)---/\n")
   f.write("while true\n")
   nodes_Hash.each do |element|
     

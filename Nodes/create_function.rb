@@ -2,7 +2,7 @@ def Function_initialize()
     #ノード群のデータ書き込み&ノード管理の実装&バッファーの実装
 
     File.open("./Nodes/function.rb", mode = "w"){|f|
-    f.write("#this is function Node\n")  # ファイルに書き込む
+    f.write("/---function-rubyノードのノードプログラム---/\n")  # ファイルに書き込む
     }
 end
 
@@ -29,7 +29,7 @@ def Node_function(node_id)
         return 0
     end
     output = 0
-
+    /ユーザーが作成した自作メソッドの呼び出し/
     input_array.each do |input_data|
  
     ")

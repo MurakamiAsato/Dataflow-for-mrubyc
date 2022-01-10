@@ -1,4 +1,4 @@
-#this is function Node
+/---function-rubyノードのノードプログラム---/
 def FunctionNode_N59ab8(msg)
 data = msg
 temp = (data[0]<<8 |data[1])
@@ -16,7 +16,7 @@ def Node_function(node_id)
         return 0
     end
     output = 0
-
+    /ユーザーが作成した自作メソッドの呼び出し/
     input_array.each do |input_data|
  
     

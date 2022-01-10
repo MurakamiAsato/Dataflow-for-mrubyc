@@ -7,6 +7,7 @@ Nodes_Hash={:Nab692=>{:type=>"inject", :repeat=>"1", :wires=>[[:N2bf48]], :input
  :Naf01a=>{:type=>"LED", :LEDtype=>"GPIO", :targetPort=>"16", :targetPort_mode=>"2", :onBoardLED=>"0", :wires=>[], :inputNodeid=>[:N89df2]}}
 DatasBuffer = []
 
+/---ノード間のデータやり取りを制御するデータ制御部---/
 def Dataprocessing(node_id, mode, output = "")
     /get:データの取り出し deleet:自分宛のデータの削除 create:次ノード宛のデータの作成/
     get_datas = []
@@ -51,8 +52,11 @@ def Dataprocessing(node_id, mode, output = "")
     end
     return get_datas
 end
+/---injectノードのノードプログラム---/
 def Node_inject(node_id)
     if Nodes_Hash[node_id][:repeat] != ""
+        /一定時間間隔が設定されている場合/
+        /「0」と「1」を交互に送信する/
         if GetTime(node_id) == 1
             if Nodes_Hash[node_id][:flow_controll] == 1
                 Nodes_Hash[node_id][:flow_controll] = 0
@@ -63,6 +67,8 @@ def Node_inject(node_id)
         end
         return 0
     else
+        /一定時間間隔が設定されていな場合/
+        /「1」を常に送信し続ける/
         Dataprocessing(node_id,:create,[1])
         return 0
     end
@@ -90,6 +96,7 @@ def GetTime(node_id)
     end
 end
 
+/I2Cノードのノードプログラム/
 def Node_I2C(node_id)
     /データ有無の確認/
     input_array = Dataprocessing(node_id,:get)
@@ -102,7 +109,7 @@ def Node_I2C(node_id)
             return 0
         end
     end
-
+    /本機能/
     sraveAd = Nodes_Hash[node_id][:ad].to_i
     output = []
     Nodes_Hash[node_id][:rules].each do |rule|
@@ -119,7 +126,7 @@ def Node_I2C(node_id)
     Dataprocessing(node_id,:create,[output])
 end
 
-#this is function Node
+/---function-rubyノードのノードプログラム---/
 def FunctionNode_N59ab8(msg)
 data = msg
 temp = (data[0]<<8 |data[1])
@@ -137,7 +144,7 @@ def Node_function(node_id)
         return 0
     end
     output = 0
-
+    /ユーザーが作成した自作メソッドの呼び出し/
     input_array.each do |input_data|
  
     
@@ -150,6 +157,7 @@ def Node_function(node_id)
 end
     
 
+/---Constantノードのノードプログラム---/
 def Node_Constant(node_id)
   input_array = Dataprocessing(node_id,:get)
   Dataprocessing(node_id,:delete)
@@ -159,7 +167,7 @@ def Node_Constant(node_id)
   Dataprocessing(node_id,:create,[Nodes_Hash[node_id][:C].to_i])  
 end
 
-#this is switch Node
+/---switchノードのノードプログラム---/
 
 def Node_switch(node_id)
     input_array = Dataprocessing(node_id,:get)
@@ -173,8 +181,8 @@ def Node_switch(node_id)
           return 0
         end
     end
-
     output_flg = []
+    #本機能
     #各入力データに対し、各出力点に対する条件と比較を行う。
     input_array.each do |input_data|
         count = 0
@@ -202,7 +210,7 @@ def Node_switch(node_id)
     Dataprocessing(node_id,:create,output_flg)
 end
 
-#this is LED Node
+/---LEDノードのノードプログラム---/
 
 def GPIO_digital_mode2(node_id,input)
     if input == 0
@@ -218,7 +226,7 @@ def Node_LED(node_id)
     if input_array == []
       return 0
     end
-      
+    /本機能/
     input_array.each do |input|
     
             if Nodes_Hash[node_id][:targetPort_mode] == "2" && Nodes_Hash[node_id][:LEDtype] == "GPIO"
@@ -229,6 +237,7 @@ def Node_LED(node_id)
 end
 
 
+/---各ノードを呼び出す司令塔(loop処理)---/
 while true
 Node_inject(:Nab692)
 Node_I2C(:Nd64ea)

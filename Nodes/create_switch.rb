@@ -22,7 +22,7 @@ end
 
 def Switch_initialize()
     File.open("./Nodes/switch.rb", mode = "w"){|f|
-    f.write("#this is switch Node\n")  # ファイルに書き込む
+    f.write("/---switchノードのノードプログラム---/\n")  # ファイルに書き込む
     }
     return :Switch_initialize
 end
@@ -88,8 +88,8 @@ def Node_switch(node_id)
           return 0
         end
     end
-
     output_flg = []
+    #本機能
     #各入力データに対し、各出力点に対する条件と比較を行う。
     input_array.each do |input_data|
         count = 0

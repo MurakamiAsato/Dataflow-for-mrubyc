@@ -1,3 +1,4 @@
+/---ノード間のデータやり取りを制御するデータ制御部---/
 def Dataprocessing(node_id, mode, output = "")
     /get:データの取り出し deleet:自分宛のデータの削除 create:次ノード宛のデータの作成/
     get_datas = []

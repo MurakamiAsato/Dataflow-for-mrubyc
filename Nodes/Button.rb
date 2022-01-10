@@ -1,3 +1,4 @@
+/---Buttuoノードのノードプログラム---/
 def Node_Button(node_id)
   input_array = Dataprocessing(node_id,:get)
   if input_array == []
@@ -13,7 +14,7 @@ def Node_Button(node_id)
       return 0
     end
   end
-
+  /本機能/
   if Nodes_Hash[node_id][:onBoardButton] == "1"
     input = sw()
     if input == 1

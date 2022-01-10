@@ -1,4 +1,4 @@
-#this is switch Node
+/---switchノードのノードプログラム---/
 
 def Node_switch(node_id)
     input_array = Dataprocessing(node_id,:get)
@@ -12,8 +12,8 @@ def Node_switch(node_id)
           return 0
         end
     end
-
     output_flg = []
+    #本機能
     #各入力データに対し、各出力点に対する条件と比較を行う。
     input_array.each do |input_data|
         count = 0
