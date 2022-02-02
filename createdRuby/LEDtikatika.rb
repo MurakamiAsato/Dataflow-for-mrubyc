@@ -85,15 +85,13 @@ def GetTime(node_id)
     end
 end
 
-#this is LED Node
-
 def GPIO_digital_mode2(node_id,input)
     if input == 0
         digitalWrite(Nodes_Hash[node_id][:targetPort].to_i,0)
     elsif input == 1
         digitalWrite(Nodes_Hash[node_id][:targetPort].to_i,1)
     end
- end
+end
     
 def Node_LED(node_id)
     input_array = Dataprocessing(node_id,:get)
@@ -110,7 +108,6 @@ def Node_LED(node_id)
 
     end
 end
-
 
 while true
 Node_inject(:N6bd04)

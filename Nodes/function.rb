@@ -1,5 +1,5 @@
 /---function-rubyノードのノードプログラム---/
-def FunctionNode_N59ab8(msg)
+def FunctionNode_N762c6(msg)
 data = msg
 temp = (data[0]<<8 |data[1])
 celsius = -45 + (175*temp/65535.0)
@@ -20,8 +20,8 @@ def Node_function(node_id)
     input_array.each do |input_data|
  
     
-        if node_id == :N59ab8
-            output = FunctionNode_N59ab8(input_data)
+        if node_id == :N762c6
+            output = FunctionNode_N762c6(input_data)
         end
         
     end

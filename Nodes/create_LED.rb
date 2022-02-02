@@ -112,7 +112,7 @@ def Node_LED(node_id)
         end
         if $created_node_parts.include?(:GPIO_digital_mode1)
             code = code + "
-            if (Nodes_Hash)[node_id][:targetPort_mode] == \"0\" || Nodes_Hash[node_id][:targetPort_mode] == \"1\") && Nodes_Hash[node_id][:LEDtype] == \"GPIO\"
+            if (Nodes_Hash[node_id][:targetPort_mode] == \"0\" || Nodes_Hash[node_id][:targetPort_mode] == \"1\") && Nodes_Hash[node_id][:LEDtype] == \"GPIO\"
                 GPIO_digital_mode1(node_id,input)
             end\n"
         end
